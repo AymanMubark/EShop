@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
 using Basket.API.Entities;
+using Basket.API.GrpcServices;
 using Basket.API.Repositories;
+using EventBus.Messages.Events;
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Basket.API.Controllers
@@ -10,16 +13,15 @@ namespace Basket.API.Controllers
     public class BasketController : ControllerBase
     {
         private readonly IBasketRepository _repository;
-        //private readonly DicountGrpcService _dicountGrpcService;
+        private readonly DiscountGrpcService _discountGrpcService;
         private readonly IMapper _mapper;
-        //private readonly IPublishEndpoint _publisher;
-
-        public BasketController(IBasketRepository repository,  IMapper mapper)
+        private readonly IPublishEndpoint _publisher;
+        public BasketController(IBasketRepository repository,  IMapper mapper, DiscountGrpcService discountGrpcService,IPublishEndpoint publisher)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
-            //_dicountGrpcService = dicountGrpcService ?? throw new ArgumentNullException(nameof(dicountGrpcService));
+            _discountGrpcService = discountGrpcService ?? throw new ArgumentNullException(nameof(discountGrpcService));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            //_publisher = publisher ?? throw new ArgumentNullException(nameof(publisher));
+            _publisher = publisher ?? throw new ArgumentNullException(nameof(publisher));
         }
 
         [HttpGet("{userName}")]
@@ -37,8 +39,8 @@ namespace Basket.API.Controllers
             // cunsume discount grpc
             foreach (var item in shoppingCart.Items)
             {
-                //var coupon = await _dicountGrpcService.GetDiscount(item.ProductName);
-                //item.Price -= coupon.Amount;
+                var coupon = await _discountGrpcService.GetDiscount(item.ProductName);
+                item.Price -= coupon.Amount;
             }
             var basket = await _repository.UpdateBasket(shoppingCart);
             return Ok(basket ?? new ShoppingCart(shoppingCart.UserName));
@@ -69,9 +71,10 @@ namespace Basket.API.Controllers
             }
 
             // Send checkout event to rqbbitmq
-            //var eventMessage = _mapper.Map<BasketCheckoutEvent>(basketCheckout);
-            //eventMessage.TotalPrice = basket.TotalPrice;
-            //await _publisher.Publish(eventMessage);
+            var eventMessage = _mapper.Map<BasketCheckoutEvent>(basketCheckout);
+            eventMessage.TotalPrice = basket.TotalPrice;
+            eventMessage.OrderDetails = _mapper.Map<List<OrderDetail>>(basket.Items);
+            await _publisher.Publish(eventMessage);
 
             await _repository.DeleteBasket(basketCheckout.UserName);
 
