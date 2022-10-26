@@ -12,7 +12,7 @@ using Catalog.API.Services;
 namespace Catalog.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     public class CategoriesController : Controller
     {
         private readonly ICategoryService categoryService;

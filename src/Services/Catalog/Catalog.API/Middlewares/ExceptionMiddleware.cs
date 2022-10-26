@@ -2,7 +2,7 @@
 using System.Net;
 using System.Text.Json;
 
-namespace Catalog.APIMiddlewares
+namespace Catalog.API.Middlewares
 {
     public class ExceptionMiddleware
     {

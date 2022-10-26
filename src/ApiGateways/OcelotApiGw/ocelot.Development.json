@@ -1,0 +1,211 @@
+{
+  "GlobalConfiguration": {
+    "BaseUrl": "localhost:8010"
+  },
+  "Routes": [
+    {
+      "UpstreamPathTemplate": "/Catalog",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/v1/Catalog",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "catalog.api",
+          "Port": 80
+        }
+      ],
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "SwaggerKey": "Catalog"
+    },
+    {
+      "UpstreamPathTemplate": "/Catalog/{id}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/v1/Catalog/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "catalog.api",
+          "Port": 80
+        }
+      ],
+      "SwaggerKey": "Catalog"
+    },
+    {
+      "UpstreamPathTemplate": "/Categories",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/v1/Categories",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "catalog.api",
+          "Port": 80
+        }
+      ],
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "SwaggerKey": "Catalog"
+    },
+    {
+      "UpstreamPathTemplate": "/Basket/{userName}",
+      "UpstreamHttpMethod": [ "Get", "Delete" ],
+      "DownstreamPathTemplate": "/api/v1/Basket/{username}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "basket.api",
+          "Port": 80
+        }
+      ],
+      "SwaggerKey": "Basket"
+    },
+    {
+      "UpstreamPathTemplate": "/Basket",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamPathTemplate": "/api/v1/Basket",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "basket.api",
+          "Port": 80
+        }
+      ],
+      "SwaggerKey": "Basket"
+    },
+    {
+      "UpstreamPathTemplate": "/Basket/Checkout",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamPathTemplate": "/api/v1/Basket/Checkout",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "basket.api",
+          "Port": 80
+        }
+      ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "3s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "SwaggerKey": "Basket"
+    },
+    {
+      "UpstreamPathTemplate": "/Discount/{productName}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/v1/Discount/{productName}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "discount.api",
+          "Port": 80
+        }
+      ],
+      "SwaggerKey": "Discount"
+    },
+    {
+      "UpstreamPathTemplate": "/Discount",
+      "UpstreamHttpMethod": [ "Post", "Put", "Delete" ],
+      "DownstreamPathTemplate": "/api/v1/Discount",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "discount.api",
+          "Port": 80
+        }
+      ],
+      "SwaggerKey": "Discount"
+    },
+    {
+      "UpstreamPathTemplate": "/Orders",
+      "UpstreamHttpMethod": [ "Get" , "Post" ],
+      "DownstreamPathTemplate": "/api/v1/Orders",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "ordering.api",
+          "Port": 80
+        }
+      ],
+      "SwaggerKey": "Ordering"
+    },
+    {
+      "UpstreamPathTemplate": "/Orders/{username}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/v1/Orders/{username}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "ordering.api",
+          "Port": 80
+        }
+      ],
+      "SwaggerKey": "Ordering"
+    },
+    {
+      "UpstreamPathTemplate": "/Shopping/{userName}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/v1/Shopping/{userName}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "shopping.aggregator",
+          "Port": 80
+        }
+      ],
+      "SwaggerKey": "Shopping"
+    }
+  ],
+  "SwaggerEndPoints": [
+    {
+      "Key": "Catalog",
+      "Config": [
+        {
+          "Name": "Catalog.API",
+          "Version": "1.0",
+          "Url": "http://catalog.api/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "Basket",
+      "Config": [
+        {
+          "Name": "Basket.API",
+          "Version": "1.0",
+          "Url": "http://basket.api/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "Discount",
+      "Config": [
+        {
+          "Name": "Discount.API",
+          "Version": "1.0",
+          "Url": "http://discount.api/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "Ordering",
+      "Config": [
+        {
+          "Name": "Ordering.API",
+          "Version": "1.0",
+          "Url": "http://ordering.api/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "Shopping",
+      "Config": [
+        {
+          "Name": "Shopping.Aggregator",
+          "Version": "1.0",
+          "Url": "http://shopping.aggregator/swagger/v1/swagger.json"
+        }
+      ]
+    }
+  ]
+}

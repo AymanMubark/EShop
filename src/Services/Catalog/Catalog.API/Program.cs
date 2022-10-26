@@ -1,9 +1,8 @@
 using Catalog.API.Data;
 using Catalog.API.Extensions;
-using Catalog.APIMiddlewares;
+using Catalog.API.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
-
 
 // Add services to the container.
 builder.Services.AddApplicationService(builder.Configuration);

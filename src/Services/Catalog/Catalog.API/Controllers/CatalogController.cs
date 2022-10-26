@@ -8,12 +8,12 @@ using Catalog.API.IServices;
 namespace Catalog.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
-    public class ProductsController : Controller
+    [Route("api/v1/[controller]")]
+    public class CatalogController : Controller
     {
         private readonly IProductService productService;
 
-        public ProductsController(IProductService productService)
+        public CatalogController(IProductService productService)
         {
             this.productService = productService;
         }

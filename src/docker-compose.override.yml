@@ -35,6 +35,16 @@ services:
         - "5672:5672"
         - "15672:15672"
 
+
+  catalog.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionStrings__CatalogConnectionString=Server=sqlserverdb;Database=CatalogDB;User Id=sa;Password=SwN12345678" 
+    depends_on:
+      - sqlserverdb
+    ports:
+      - "8000:80"
+
   basket.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -44,15 +54,6 @@ services:
     depends_on:
       - basketdb
       - discountdb
-    ports:
-      - "8000:80"
-
-  catalog.api:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - "ConnectionStrings__CatalogConnectionString=Server=sqlserverdb;Database=CatalogDB;User Id=sa;Password=SwN12345678" 
-    depends_on:
-      - sqlserverdb
     ports:
       - "8001:80"
 
@@ -84,3 +85,28 @@ services:
       - sqlserverdb
     ports:
       - "8004:80"
+
+  shopping.aggregator:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ApiSettings__CatalogUrl=http://catalog.api"
+      - "ApiSettings__BasketUrl=http://basket.api"
+      - "ApiSettings__OrderingUrl=http://ordering.api"
+    ports:
+      - "8005:80"
+    depends_on:
+      - catalog.api
+      - basket.api
+      - ordering.api
+
+  ocelotapigw:
+    container_name: ocelotapigw
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "8010:80"
+
+  #angularshop:
+  #  container_name: angularshop
+  #  ports:
+  #    - "4200:80"
