@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: basketdb-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: basketdb
+  template:
+    metadata:
+      labels:
+        app: basketdb
+    spec:
+      containers:
+        - name: basketdb
+          image: redis:alpine
+          ports:
+            - containerPort: 6379
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: basketdb-clusterip-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: basketdb
+  ports:
+  - name: basketdb
+    protocol: TCP
+    port: 6379
+    targetPort: 6379
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: basketdb-loadbalancer
+spec:
+  type: LoadBalancer
+  selector:
+    app: basketdb
+  ports:
+  - protocol: TCP
+    port: 6379
+    targetPort: 6379

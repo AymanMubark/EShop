@@ -45,6 +45,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApps", "WebApps", "{4EE7
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "angularshop", "WebApps\angularshop\angularshop.esproj", "{C416C2C3-2A7D-433E-9C5E-0B768F6C2288}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "K8S", "K8S", "{12E53CD7-DB5F-4BB3-B0E8-692F696281FD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

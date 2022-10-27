@@ -21,9 +21,12 @@ namespace Discount.API.Extensions
                     Connection = connection
                 };
 
+                //command.CommandText = "CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";";
+                //await command.ExecuteNonQueryAsync();
+
                 command.CommandText = "DROP TABLE IF EXISTS Coupon;";
-                await command.ExecuteNonQueryAsync(); 
-                
+                await command.ExecuteNonQueryAsync();
+
 
                 command.CommandText = @"CREATE TABLE Coupon(Id UUID NOT NULL DEFAULT uuid_generate_v1(),
                                                                 CONSTRAINT Id_tbl PRIMARY KEY ( Id ), 
