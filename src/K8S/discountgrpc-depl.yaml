@@ -16,7 +16,7 @@ spec:
       - name: discountgrpc
         image: csaymandocker/discountgrpc:latest
         ports:
-        - containerPort: 8080
+        - containerPort: 80
         env:
            - name: "ASPNETCORE_ENVIRONMENT"
              value: "Development"
@@ -49,4 +49,4 @@ spec:
   - port: 8003
     targetPort: 8003
   selector:
-    app: discountgrpc
+    app: discountgrpc  
