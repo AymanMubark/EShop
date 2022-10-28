@@ -17,7 +17,8 @@ namespace Discount.Grpc.Extensions
                 {
                     Connection = connection
                 };
-
+                //command.CommandText = "CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";";
+                //await command.ExecuteNonQueryAsync();
                 command.CommandText = @"DROP TABLE IF EXISTS Coupon;";
                 await command.ExecuteNonQueryAsync(); 
                 

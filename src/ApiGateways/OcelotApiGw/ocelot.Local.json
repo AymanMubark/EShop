@@ -11,7 +11,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 8000
+          "Port": 5000
         }
       ],
       "FileCacheOptions": { "TtlSeconds": 30 },
@@ -25,7 +25,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 8000
+          "Port": 5000
         }
       ],
       "SwaggerKey": "Catalog"
@@ -38,7 +38,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 8000
+          "Port": 5000
         }
       ],
       "FileCacheOptions": { "TtlSeconds": 30 },
@@ -52,7 +52,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 8001
+          "Port": 5001
         }
       ],
       "SwaggerKey": "Basket"
@@ -65,7 +65,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 8001
+          "Port": 5001
         }
       ],
       "SwaggerKey": "Basket"
@@ -78,7 +78,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 8001
+          "Port": 5001
         }
       ],
       "RateLimitOptions": {
@@ -98,7 +98,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 8002
+          "Port": 5002
         }
       ],
       "SwaggerKey": "Discount"
@@ -111,7 +111,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 8002
+          "Port": 5002
         }
       ],
       "SwaggerKey": "Discount"
@@ -124,7 +124,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 8004
+          "Port": 5004
         }
       ],
       "SwaggerKey": "Ordering"
@@ -137,15 +137,15 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 8004
+          "Port": 5004
         }
       ],
       "SwaggerKey": "Ordering"
     },
     {
-      "UpstreamPathTemplate": "/GetShopping",
+      "UpstreamPathTemplate": "/Shopping/{userName}",
       "UpstreamHttpMethod": [ "Get" ],
-      "DownstreamPathTemplate": "/api/v1/Shopping",
+      "DownstreamPathTemplate": "/api/v1/Shopping/{userName}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -163,7 +163,7 @@
         {
           "Name": "Catalog.API",
           "Version": "1.0",
-          "Url": "http://localhost:8000/swagger/v1/swagger.json"
+          "Url": "http://localhost:5000/swagger/v1/swagger.json"
         }
       ]
     },
@@ -173,7 +173,7 @@
         {
           "Name": "Basket.API",
           "Version": "1.0",
-          "Url": "http://localhost:8001/swagger/v1/swagger.json"
+          "Url": "http://localhost:5001/swagger/v1/swagger.json"
         }
       ]
     },
@@ -183,7 +183,7 @@
         {
           "Name": "Discount.API",
           "Version": "1.0",
-          "Url": "http://localhost:8002/swagger/v1/swagger.json"
+          "Url": "http://localhost:5002/swagger/v1/swagger.json"
         }
       ]
     },
@@ -193,7 +193,7 @@
         {
           "Name": "Ordering.API",
           "Version": "1.0",
-          "Url": "http://localhost:8004/swagger/v1/swagger.json"
+          "Url": "http://localhost:5004/swagger/v1/swagger.json"
         }
       ]
     },
@@ -201,7 +201,7 @@
       "Key": "Shopping",
       "Config": [
         {
-          "Name": "Shopping",
+          "Name": "Shopping.Aggregator",
           "Version": "1.0",
           "Url": "http://localhost:5005/swagger/v1/swagger.json"
         }

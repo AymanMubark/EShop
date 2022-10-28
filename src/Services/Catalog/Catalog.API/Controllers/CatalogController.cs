@@ -2,6 +2,7 @@
 using Catalog.API.DTOs;
 using Catalog.API.Extensions;
 using Catalog.API.IServices;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -18,6 +19,7 @@ namespace Catalog.API.Controllers
             this.productService = productService;
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductResponseDTO>>  GetProductById(Guid id)
         {

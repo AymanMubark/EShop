@@ -6,8 +6,8 @@ using System.Net;
 
 namespace Shopping.Aggregator.Controllers
 {
-    [ApiController]
     [Route("api/v1/[controller]")]
+    [ApiController]
     public class ShoppingController : Controller
     {
         private readonly ICatalogService _catalogService;
@@ -21,8 +21,7 @@ namespace Shopping.Aggregator.Controllers
             _orderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
         }
 
-        [HttpGet("{userName}", Name = "GetShopping")]
-        [ProducesResponseType(typeof(ShoppingModel), (int)HttpStatusCode.OK)]
+        [HttpGet("{userName}")]
         public async Task<ActionResult<ShoppingModel>> GetShopping(string userName)
         {
             // get basket with username

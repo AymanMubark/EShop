@@ -22,7 +22,7 @@ spec:
              value: "Development"
            - name: "Urls"
              value: "http://*:8000"
-           - name: "ConnectionStrings__ConnectionString"
+           - name: "ConnectionStrings__CatalogConnectionString"
              value: "Server=mssql-clusterip-srv;Database=CatalogDB;User Id=sa;Password=SwN12345678"
 ---
 apiVersion: v1

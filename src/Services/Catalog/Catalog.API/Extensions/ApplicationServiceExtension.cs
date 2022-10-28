@@ -16,14 +16,15 @@ namespace Catalog.API.Extensions
             services.AddScoped<IPhotoService, PhotoService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ICategoryService, CategoryService>();
-           
+
             services.AddAutoMapper(typeof(MapperProfile).Assembly);
 
-            services.AddDbContext<CatalogContext>(option => {
+            services.AddDbContext<CatalogContext>(option =>
+            {
                 option.UseSqlServer(Configuration.GetConnectionString("CatalogConnectionString"));
                 option.EnableDetailedErrors();
                 option.EnableSensitiveDataLogging();
-               });
+            });
 
             return services;
         }
