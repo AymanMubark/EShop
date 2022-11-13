@@ -54,12 +54,6 @@ services:
       context: .
       dockerfile: ApiGateways/Shopping.Aggregator/Dockerfile 
 
-  #angularshop:
-  #  image: ${DOCKER_REGISTRY-}angularshop
-  #  build:
-  #    context: .
-  #    dockerfile: WebApps/angularshop/Dockerfile
-
 volumes:
   postgres_data:
 

@@ -105,8 +105,3 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
       - "8010:80"
-
-  #angularshop:
-  #  container_name: angularshop
-  #  ports:
-  #    - "4200:80"

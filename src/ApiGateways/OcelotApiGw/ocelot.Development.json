@@ -47,7 +47,7 @@
     {
       "UpstreamPathTemplate": "/Basket/{userName}",
       "UpstreamHttpMethod": [ "Get", "Delete" ],
-      "DownstreamPathTemplate": "/api/v1/Basket/{username}",
+      "DownstreamPathTemplate": "/api/v1/Basket/{userName}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -130,9 +130,9 @@
       "SwaggerKey": "Ordering"
     },
     {
-      "UpstreamPathTemplate": "/Orders/{username}",
+      "UpstreamPathTemplate": "/Orders/{userName}",
       "UpstreamHttpMethod": [ "Get" ],
-      "DownstreamPathTemplate": "/api/v1/Orders/{username}",
+      "DownstreamPathTemplate": "/api/v1/Orders/{userName}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {

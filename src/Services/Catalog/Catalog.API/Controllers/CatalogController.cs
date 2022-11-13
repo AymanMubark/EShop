@@ -19,7 +19,6 @@ namespace Catalog.API.Controllers
             this.productService = productService;
         }
 
-        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductResponseDTO>>  GetProductById(Guid id)
         {

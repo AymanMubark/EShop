@@ -7,5 +7,6 @@
         public string ProductImageUrl { get; set; } = "";
         public int Quantity { get; set; } = 1;
         public decimal Price { get; set; } = 0;
+        public string Choices { get; set; } 
     }
 }

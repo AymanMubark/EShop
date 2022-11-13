@@ -18,10 +18,10 @@ namespace Ordering.API.Controllers
         }
 
 
-        [HttpGet("{username}")]
-        public async Task<ActionResult<List<OrderResponseDTO>>> GetUserOrders(string username)
+        [HttpGet("{userName}")]
+        public async Task<ActionResult<List<OrderResponseDTO>>> GetUserOrders(string userName)
         {
-            var query = new GetOrdersListQuery(username);
+            var query = new GetOrdersListQuery(userName);
             return Ok(await _mediator.Send(query));
         }
 
