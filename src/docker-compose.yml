@@ -54,6 +54,20 @@ services:
       context: .
       dockerfile: ApiGateways/Shopping.Aggregator/Dockerfile 
 
+  notification.api:
+    image: ${DOCKER_REGISTRY-}notificationapi
+    build:
+      context: .
+      dockerfile: Services/Notification/Notification.API/Dockerfile
+
+  identity.api:
+    image: ${DOCKER_REGISTRY-}identityapi
+    build:
+      context: .
+      dockerfile: Services/Identity/Identity.API/Dockerfile
+
 volumes:
   postgres_data:
+
+
 

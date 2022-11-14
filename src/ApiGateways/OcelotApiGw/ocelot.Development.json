@@ -118,7 +118,7 @@
     },
     {
       "UpstreamPathTemplate": "/Orders",
-      "UpstreamHttpMethod": [ "Get" , "Post" ],
+      "UpstreamHttpMethod": [ "Get", "Post" ],
       "DownstreamPathTemplate": "/api/v1/Orders",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -141,6 +141,20 @@
         }
       ],
       "SwaggerKey": "Ordering"
+    },
+
+    {
+      "UpstreamPathTemplate": "/Notification",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamPathTemplate": "/api/v1/Notification",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "notification.api",
+          "Port": 80
+        }
+      ],
+      "SwaggerKey": "Notification"
     },
     {
       "UpstreamPathTemplate": "/Shopping/{userName}",
@@ -194,6 +208,16 @@
           "Name": "Ordering.API",
           "Version": "1.0",
           "Url": "http://ordering.api/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "Notification",
+      "Config": [
+        {
+          "Name": "Notification.API",
+          "Version": "1.0",
+          "Url": "http://notification.api/swagger/v1/swagger.json"
         }
       ]
     },

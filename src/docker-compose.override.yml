@@ -99,6 +99,26 @@ services:
       - basket.api
       - ordering.api
 
+  identity.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "8006:80"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+
+  notification.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "EventBusSettings__HostAddress=amqp://guest:guest@rabbitmq:5672"     
+      - "EmailSettings__SmtpClient=smtp.mailtrap.io"
+      - "EmailSettings__UserName=748508b83457e5"
+      - "EmailSettings__Password=a07205fef5e9a2"
+      - "EmailSettings__FromEmail=from@example.com"
+
+    ports:
+      - "8007:80"
+
   ocelotapigw:
     container_name: ocelotapigw
     environment:

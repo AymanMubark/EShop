@@ -143,6 +143,19 @@
       "SwaggerKey": "Ordering"
     },
     {
+      "UpstreamPathTemplate": "/Notification",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamPathTemplate": "/api/v1/Notification",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5007
+        }
+      ],
+      "SwaggerKey": "Notification"
+    },
+    {
       "UpstreamPathTemplate": "/Shopping/{userName}",
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamPathTemplate": "/api/v1/Shopping/{userName}",
@@ -194,6 +207,16 @@
           "Name": "Ordering.API",
           "Version": "1.0",
           "Url": "http://localhost:5004/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "Notification",
+      "Config": [
+        {
+          "Name": "Notification.API",
+          "Version": "1.0",
+          "Url": "http://localhost:5007/swagger/v1/swagger.json"
         }
       ]
     },
