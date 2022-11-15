@@ -31,7 +31,7 @@ namespace Ordering.API.Controllers
             await _mediator.Send(model);
             return Ok();
         }
-
+   
     }
 }
 

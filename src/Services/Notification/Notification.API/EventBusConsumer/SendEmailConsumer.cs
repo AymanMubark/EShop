@@ -20,6 +20,7 @@ namespace Notification.API.EventBusConsumer
         public async Task Consume(ConsumeContext<SendEmailEvent> context)
         {
             var message = _mapper.Map<EmailMessage>(context.Message);
+            Console.WriteLine(message.Content);
             await _emailService.SendEmailAsync(message);
         }
     }

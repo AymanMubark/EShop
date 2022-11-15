@@ -1,13 +1,15 @@
-﻿using EventBus.Messages.Common;
-using FluentValidation;
+﻿using MediatR;
+using System.Net;
 using MassTransit;
-using MediatR;
+using FluentValidation;
+using EventBus.Messages.Common;
+using EventBus.Messages.Events;
+using Ordering.Application.Mapper;
+using Ordering.Application.Behaviours;
 using Ordering.API.EventBusConsumer;
 using Ordering.API.Mapper;
-using Ordering.Application.Behaviours;
-using Ordering.Application.Features.Orders.Commands.CheckoutOrder;
-using Ordering.Application.Mapper;
 using System.Reflection;
+using Ordering.Application.Features.Orders.Commands.CheckoutOrder;
 
 namespace Ordering.API.Extensions
 {
@@ -27,20 +29,32 @@ namespace Ordering.API.Extensions
 
             services.AddAutoMapper(typeof(OrderingMapper).Assembly);
 
-            //RabbitMq
-            services.AddMassTransit(config => {
-                config.AddConsumer<BasketCheckoutConsumer>();
-                config.UsingRabbitMq((ctx, cfg) => {
-                    cfg.Host(configuration["EventBusSettings:HostAddress"]);
+           services.AddMassTransit(x =>
+            {
+                x.AddConsumer<BasketCheckoutConsumer>();
+                x.UsingRabbitMq((ctx, cfg) =>
+                {
                     cfg.ReceiveEndpoint(EventBusConstants.BasketCheckoutQueue, c =>
                     {
                         c.ConfigureConsumer<BasketCheckoutConsumer>(ctx);
+                    });
+                    cfg.ConfigureEndpoints(ctx);
+                });
 
+                x.AddRider(rider =>
+                {
+                    rider.AddProducer<SendEmailEvent>(nameof(SendEmailEvent));
+
+                    rider.UsingKafka((context, k) =>
+                    {
+                        k.Host("localhost:9092");
                     });
                 });
             });
 
+
             return services;
         }
+       
     }
 }

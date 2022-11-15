@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using EventBus.Messages.Events;
 using MassTransit;
 using MediatR;
-using Ordering.Application.Contracts.Persistence;
+using EventBus.Messages.Events;
 using Ordering.Domain.Entites;
+using Ordering.Application.Contracts.Persistence;
 
 namespace Ordering.Application.Features.Orders.Commands.CheckoutOrder
 {
@@ -11,13 +11,14 @@ namespace Ordering.Application.Features.Orders.Commands.CheckoutOrder
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IMapper _mapper;
-        private readonly IPublishEndpoint _publisher;
+        private readonly ITopicProducer<SendEmailEvent> _sendEmailProducer;
 
-        public CheckoutOrderCommandHandler(IOrderRepository orderRepository, IMapper mapper, IPublishEndpoint publisher)
+
+        public CheckoutOrderCommandHandler(IOrderRepository orderRepository, IMapper mapper, ITopicProducer<SendEmailEvent> sendEmailProducer)
         {
             _orderRepository = orderRepository ?? throw new ArgumentNullException(nameof(orderRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            _publisher = publisher;
+            _sendEmailProducer = sendEmailProducer;
         }
 
         public async Task<Guid> Handle(CheckoutOrderCommand request, CancellationToken cancellationToken)
@@ -43,7 +44,7 @@ namespace Ordering.Application.Features.Orders.Commands.CheckoutOrder
             }
 
             message.Content += $"</tbody></table><h5>Tax : {newOrder.Tax}$</h5><h4>Total : {newOrder.TotalPrice}$</h4>";
-            await _publisher.Publish(message);
+            await _sendEmailProducer.Produce(message);
             return newOrder.Id;
         }
 
