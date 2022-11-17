@@ -7,7 +7,7 @@ namespace Catalog.API.Extensions
     public static class HttpExtensions
     {
         public static void AddPaginationHeader(this HttpResponse response, int currentPage,
-            int itemsPerPage, int totalItems, int totalPages)
+            int itemsPerPage, long totalItems, long totalPages)
         {
             var paginationHeader = new PaginationHeaderDTO(currentPage, itemsPerPage, totalItems, totalPages);
             var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };

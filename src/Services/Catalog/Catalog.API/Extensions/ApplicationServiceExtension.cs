@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 using Catalog.API.Data;
 using Catalog.API.Helpers;
 using Catalog.API.Mapper;
 using Catalog.API.IServices;
 using Catalog.API.Services;
+using Nest;
 
 namespace Catalog.API.Extensions
 {
@@ -26,7 +26,13 @@ namespace Catalog.API.Extensions
                 option.EnableSensitiveDataLogging();
             });
 
+
+            var settings = new ConnectionSettings();
+            services.AddSingleton<IElasticClient>(new ElasticClient(settings));
+
             return services;
         }
+
+
     }
 }

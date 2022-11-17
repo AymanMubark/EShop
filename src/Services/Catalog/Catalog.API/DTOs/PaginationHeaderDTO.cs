@@ -3,7 +3,7 @@ namespace Catalog.API.DTOs
 {
     public class PaginationHeaderDTO
     {
-        public PaginationHeaderDTO(int currentPage, int itemsPerPage, int totalItems, int totalPages)
+        public PaginationHeaderDTO(int currentPage, int itemsPerPage, long totalItems, long totalPages)
         {
             CurrentPage = currentPage;
             ItemsPerPage = itemsPerPage;
@@ -13,8 +13,8 @@ namespace Catalog.API.DTOs
 
         public int CurrentPage { get; set; }
         public int ItemsPerPage { get; set; }
-        public int TotalItems { get; set; }
-        public int TotalPages { get; set; }
+        public long TotalItems { get; set; }
+        public long TotalPages { get; set; }
     }
 }
 

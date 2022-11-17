@@ -12,6 +12,7 @@ namespace Catalog.API.DTOs
         public string SKU { get; set; } = "";
         public double Price { get; set; }
         public double? OldPrice { get; set; }
+        public DateTime? CreatedDate { get; set; }
         public virtual CategoryResponseDTO? Category { get; set; }
         public virtual List<ProductImageResponseDTO> ProductImages { get; set; }
         public virtual List<ProductChoiceReponseDTO>? ProductChoices { get; set; }

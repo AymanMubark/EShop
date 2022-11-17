@@ -1,8 +1,6 @@
 using Catalog.API.Data;
 using Catalog.API.Extensions;
 using Catalog.API.Middlewares;
-using CloudinaryDotNet.Actions;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
