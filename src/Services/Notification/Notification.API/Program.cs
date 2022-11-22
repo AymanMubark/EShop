@@ -1,13 +1,15 @@
-using EventBus.Messages.Common;
+using Common.Logging;
 using EventBus.Messages.Events;
 using MassTransit;
 using Notification.API.EventBusConsumer;
 using Notification.API.Mapper;
 using Notification.API.Services;
+using Serilog;
 using System.Net;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Host.UseSerilog(SeriLogger.Configure);
 
 // Add services to the container.
 

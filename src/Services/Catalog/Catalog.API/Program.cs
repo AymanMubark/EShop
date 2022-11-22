@@ -1,10 +1,14 @@
 using Catalog.API.Data;
 using Catalog.API.Extensions;
 using Catalog.API.Middlewares;
+using Common.Logging;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Host.UseSerilog(SeriLogger.Configure);
 // Add services to the container.
 builder.Services.AddApplicationService(builder.Configuration);
 
@@ -45,6 +49,8 @@ builder.Services.AddSwaggerGen(c =>
                     }});
 });
 
+builder.Services.AddHealthChecks()
+    .AddDbContextCheck<CatalogContext>();
 
 var app = builder.Build();
 
@@ -61,6 +67,13 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+
+app.MapHealthChecks("/hc", new HealthCheckOptions()
+{
+    Predicate = _ => true,
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
 
 await app.initalApp();
 

@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using System.Net;
 using MassTransit;
 using FluentValidation;
 using EventBus.Messages.Common;
@@ -17,6 +16,7 @@ namespace Ordering.API.Extensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddHealthChecks();
             services.AddAutoMapper(typeof(MapperProfile).Assembly);
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
@@ -44,8 +44,9 @@ namespace Ordering.API.Extensions
                 x.AddRider(rider =>
                 {
                     rider.AddProducer<SendEmailEvent>(nameof(SendEmailEvent));
+                    rider.AddProducer<SendSMSEvent>(nameof(SendSMSEvent));
 
-                    rider.UsingKafka((context, k) =>
+                    rider.UsingKafka((ctx, k) =>
                     {
                         k.Host("localhost:9092");
                     });

@@ -12,13 +12,15 @@ namespace Catalog.API.Services
     public class ProductService : IProductService
     {
         public readonly CatalogContext _db;
+        public readonly ILogger<ProductService> _logger;
         public readonly IMapper _mapper;
         public readonly IElasticClient _elasticClient;
-        public ProductService(CatalogContext db, IMapper mapper, IElasticClient elasticClient)
+        public ProductService(CatalogContext db, IMapper mapper, IElasticClient elasticClient, ILogger<ProductService> logger)
         {
             _db = db;
             _mapper = mapper;
             _elasticClient = elasticClient;
+            _logger = logger;
         }
 
         public async Task<ProductResponseDTO> GetProductById(Guid id)
@@ -40,7 +42,6 @@ namespace Catalog.API.Services
 
         public async Task<PagedList<ProductResponseDTO>> GetProducts(ProductSearchDTO model)
         {
-
             //var query = _db.Products
             //                     .AsQueryable();
 
@@ -76,24 +77,6 @@ namespace Catalog.API.Services
             //                     x.FullDescription.ToLower().Contains(model.SearchKey.ToLower()) ||
             //                     x.Category!.Name.ToLower().Contains(model.SearchKey.ToLower())
             //        ));
-            //if (!string.IsNullOrWhiteSpace(model.SortBy))
-            //{
-
-            //    switch (model.SortBy)
-            //    {
-            //        case "PriceLowToHigh":
-            //            query = query.OrderBy(x => x.Price);
-            //            break;
-            //        case "PriceHighToLow":
-            //            query = query.OrderByDescending(x => x.Price);
-            //            break;
-            //        case "NewArrivals":
-            //            query = query.OrderByDescending(x => x.CreatedDate);
-            //            break;
-            //        case "Rating":
-            //            break;
-            //    }
-            //}
 
             var sortDescriptor =  new SortDescriptor<ProductResponseDTO>();
             string[] ids = {};
@@ -125,9 +108,7 @@ namespace Catalog.API.Services
         .Size(model.PageSize)
         .Sort(s=> sortDescriptor)
         .Query(q =>q.MultiMatch(m=> m.Fields(f=>f.Field(p=> p.Name).Fields(p=> p.Description).Field(p=>p.FullDescription).Field(p=>p.Category!.Name)).Query(model.SearchKey).Type(TextQueryType.Phrase))
-           && q.Terms(m => m
-            .Field(f => f.ProductChoices.First().Choice.Id)
-            .Terms(ids.First()))
+    
         && q.Range(r=>r.Field(f => f.Price).LessThan(model.MaxPrice).GreaterThanOrEquals(model.MinPrice))
         && q.MatchPhrase(m=> m.Field(f=>f.Category!.Id).Query(model.CategoryId.ToString()))
      

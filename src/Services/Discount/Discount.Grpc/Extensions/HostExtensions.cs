@@ -1,34 +1,56 @@
-﻿using Npgsql;
+﻿using Microsoft.Extensions.Configuration;
+using Npgsql;
+using Polly;
 
 namespace Discount.Grpc.Extensions
 {
     public static class HostExtensions
     {
-        public static async Task initalApp(this WebApplication app)
+        public static  void initalApp(this WebApplication app)
         {
             try
             {
+                using var scope = app.Services.CreateScope();
+                var services = scope.ServiceProvider;
+                var logger = services.GetRequiredService<ILogger<WebApplication>>();
 
-                using var connection = new NpgsqlConnection
-                    (app.Configuration.GetValue<string>("ConnectionStrings:ConnectionString"));
-                connection.Open();
+                logger.LogInformation("Migrating postresql database.");
 
-                using var command = new NpgsqlCommand
+                var retry = Policy.Handle<NpgsqlException>()
+                    .WaitAndRetry(
+                        retryCount: 5,
+                        sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)), // 2,4,8,16,32 sc
+                        onRetry: (exception, retryCount, context) =>
+                        {
+                            logger.LogError($"Retry {retryCount} of {context.PolicyKey} at {context.OperationKey}, due to: {exception}.");
+                        });
+
+                retry.Execute(() =>
                 {
-                    Connection = connection
-                };
-                //command.CommandText = "CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";";
-                //await command.ExecuteNonQueryAsync();
-                command.CommandText = @"DROP TABLE IF EXISTS Coupon;";
-                await command.ExecuteNonQueryAsync(); 
-                
+                    using var connection = new NpgsqlConnection
+                    (app.Configuration.GetValue<string>("ConnectionStrings:ConnectionString"));
+                    connection.Open();
 
-                command.CommandText = @"CREATE TABLE Coupon(Id UUID NOT NULL DEFAULT uuid_generate_v1(),
+                    using var command = new NpgsqlCommand
+                    {
+                        Connection = connection
+                    };
+
+                    command.CommandText = "DROP TABLE IF EXISTS Coupon";
+                    command.ExecuteNonQuery();
+
+                    command.CommandText = @"CREATE TABLE Coupon(Id UUID NOT NULL DEFAULT uuid_generate_v1(),
                                                                 CONSTRAINT Id_tbl PRIMARY KEY ( Id ), 
                                                                 ProductName VARCHAR(24) NOT NULL,
                                                                 Description TEXT,
                                                                 Amount INT);";
-                await command.ExecuteNonQueryAsync();
+                    command.ExecuteNonQuery();
+
+
+                });
+
+                logger.LogInformation("Migrated postresql database.");
+
 
             }
             catch (NpgsqlException ex)

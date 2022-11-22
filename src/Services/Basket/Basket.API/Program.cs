@@ -1,13 +1,16 @@
-
-using Basket.API.GrpcServices;
-using Basket.API.Mapper;
-using Basket.API.Repositories;
-using Discount.Grpc.Protos;
+using Serilog;
 using MassTransit;
+using Common.Logging;
+using Basket.API.Mapper;
+using Discount.Grpc.Protos;
+using HealthChecks.UI.Client;
+using Basket.API.GrpcServices;
+using Basket.API.Repositories;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
-
-
+builder.Host.UseSerilog(SeriLogger.Configure);
 
 //Redis
 builder.Services.AddStackExchangeRedisCache(options =>
@@ -15,18 +18,24 @@ builder.Services.AddStackExchangeRedisCache(options =>
     options.Configuration = builder.Configuration.GetValue<string>("CacheSettings:ConnectionString");
 });
 
-builder.Services.AddScoped<IBasketRepository,BasketRepository>();
-builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(opt=> opt.Address = new Uri(builder.Configuration["GrpcSettings:DiscountUrl"]));
+builder.Services.AddScoped<IBasketRepository, BasketRepository>();
+builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(opt => opt.Address = new Uri(builder.Configuration["GrpcSettings:DiscountUrl"]));
 builder.Services.AddScoped<DiscountGrpcService>();
 builder.Services.AddAutoMapper(typeof(BasketProfile).Assembly);
 
-
 //RabbitMq
-builder.Services.AddMassTransit(config => {
-    config.UsingRabbitMq((ctx, cfg) => {
+builder.Services.AddMassTransit(config =>
+{
+    config.UsingRabbitMq((ctx, cfg) =>
+    {
         cfg.Host(builder.Configuration["EventBusSettings:HostAddress"]);
     });
 });
+
+//Check Health
+builder.Services.AddHealthChecks()
+    .AddRedis(builder.Configuration.GetValue<string>("CacheSettings:ConnectionString"), "Redis Health", HealthStatus.Degraded);
+
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -47,5 +56,12 @@ if (app.Environment.IsDevelopment())
 app.UseAuthorization();
 
 app.MapControllers();
+
+
+app.MapHealthChecks("/hc", new HealthCheckOptions()
+{
+    Predicate = _ => true,
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
 
 app.Run();

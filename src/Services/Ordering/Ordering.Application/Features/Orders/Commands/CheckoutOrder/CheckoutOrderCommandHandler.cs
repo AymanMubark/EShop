@@ -12,13 +12,15 @@ namespace Ordering.Application.Features.Orders.Commands.CheckoutOrder
         private readonly IOrderRepository _orderRepository;
         private readonly IMapper _mapper;
         private readonly ITopicProducer<SendEmailEvent> _sendEmailProducer;
+        private readonly ITopicProducer<SendSMSEvent> _sendSMSProducer;
 
 
-        public CheckoutOrderCommandHandler(IOrderRepository orderRepository, IMapper mapper, ITopicProducer<SendEmailEvent> sendEmailProducer)
+        public CheckoutOrderCommandHandler(IOrderRepository orderRepository, IMapper mapper, ITopicProducer<SendEmailEvent> sendEmailProducer, ITopicProducer<SendSMSEvent> sendSMSProducer)
         {
             _orderRepository = orderRepository ?? throw new ArgumentNullException(nameof(orderRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _sendEmailProducer = sendEmailProducer;
+            _sendSMSProducer = sendSMSProducer;
         }
 
         public async Task<Guid> Handle(CheckoutOrderCommand request, CancellationToken cancellationToken)
@@ -45,6 +47,11 @@ namespace Ordering.Application.Features.Orders.Commands.CheckoutOrder
 
             message.Content += $"</tbody></table><h5>Tax : {newOrder.Tax}$</h5><h4>Total : {newOrder.TotalPrice}$</h4>";
             await _sendEmailProducer.Produce(message);
+            await _sendSMSProducer.Produce(new SendSMSEvent
+            {
+                To = "084378647364",
+                Content = "sms jdksfj  jkds"
+            });
             return newOrder.Id;
         }
 

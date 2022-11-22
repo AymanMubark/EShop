@@ -13,17 +13,19 @@ namespace Shopping.Aggregator.Controllers
         private readonly ICatalogService _catalogService;
         private readonly IBasketService _basketService;
         private readonly IOrderService _orderService;
-
-        public ShoppingController(ICatalogService catalogService, IBasketService basketService, IOrderService orderService)
+        public ILogger<ShoppingController> _logger { get; set; }
+        public ShoppingController(ICatalogService catalogService, IBasketService basketService, IOrderService orderService, ILogger<ShoppingController> logger)
         {
             _catalogService = catalogService ?? throw new ArgumentNullException(nameof(catalogService));
             _basketService = basketService ?? throw new ArgumentNullException(nameof(basketService));
             _orderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
+            _logger = logger;
         }
 
         [HttpGet("{userName}")]
         public async Task<ActionResult<ShoppingModel>> GetShopping(string userName)
         {
+            _logger.LogInformation("Test");
             // get basket with username
             // iterate basket items and consume products with basket item productId member
             // map product related members into basketitem dto with extended columns
